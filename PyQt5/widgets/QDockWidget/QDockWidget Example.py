@@ -55,6 +55,10 @@ class BasicMenu(QMainWindow):
     def createDockWidget(self):
         dock_widget = QDockWidget()
         dock_widget.setWindowTitle('Example Dock')
+        # Qt.LeftDockWidgetArea
+        # Qt.RightDockWidgetArea
+        # Qt.TopDockWidgetArea
+        # Qt.BottomDockWidgetArea
         dock_widget.setAllowedAreas(Qt.AllDockWidgetAreas)
         dock_widget.setWidget(QTextEdit())
 
