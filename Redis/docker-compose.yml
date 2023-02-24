@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  redis:
+    image: "redis:7"
+    container_name: "redis-testing"
+  app:
+    image: "python:3.7.4"
+    container_name: "python-testing"
+    volumes:
+      - ./app:/usr/src/app
+    working_dir: "/usr/src/app"
+    entrypoint: ["bash", "-c", "chmod a+x ./install_and_run.sh && ./install_and_run.sh"]
+    depends_on:
+      - redis
