@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: "mysql-server.io"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123456
+      - MYSQL_DATABASE=abstract_factory_method
+  app:
+    image: python:3.7.4
+    container_name: "app-afm"
+    volumes:
+      - .:/usr/src/app
+    working_dir: "/usr/src/app"
+    entrypoint: ["bash", "-c", "chmod a+x ./install.sh && ./install.sh"]

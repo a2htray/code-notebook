@@ -1,0 +1,5 @@
+host: "mysql-server.io"
+port: 3306
+database: "abstract_factory_method"
+user: "root"
+password: "root123456"
