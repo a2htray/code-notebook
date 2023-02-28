@@ -1,5 +1,5 @@
-host: "mysql-server.io"
-port: 3306
+host: "postgres-server.io"
+port: 5432
 database: "abstract_factory_method"
-user: "root"
-password: "root123456"
+user: "postgres"
+password: "postgres123456"

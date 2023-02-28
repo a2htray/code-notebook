@@ -6,9 +6,15 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root123456
       - MYSQL_DATABASE=abstract_factory_method
+  postgres:
+    image: postgres:15.2
+    container_name: "postgres-server.io"
+    environment:
+      - POSTGRES_PASSWORD=postgres123456
+      - POSTGRES_DB=abstract_factory_method
   app:
     image: python:3.7.4
-    container_name: "app-afm"
+    container_name: "pyapp.io"
     volumes:
       - .:/usr/src/app
     working_dir: "/usr/src/app"
