@@ -8,6 +8,7 @@ import (
 var list = []string{
 	"1) shorthand",
 	"2) user defined flag type",
+	"3) flag.NewFlagSet",
 }
 
 func main() {
@@ -24,5 +25,7 @@ func main() {
 		examples.ParseFruit()
 	} else if seqNo == 1 {
 		examples.ParseStudent()
+	} else if seqNo == 2 {
+		examples.ParseArguments()
 	}
 }
