@@ -4,5 +4,10 @@
 # create date: 2023/3/5
 
 """
-description
+PAT 乙级 1017
 """
+
+if __name__ == '__main__':
+    a, b = map(int, input().split(' '))
+
+    print(a // b, a % b)
