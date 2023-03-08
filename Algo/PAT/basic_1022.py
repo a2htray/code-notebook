@@ -14,7 +14,7 @@ if __name__ == '__main__':
     total = num1 + num2
     if total == 0:
         print(0)
-        exit(1)
+        exit(0)
 
     res = []
     while total >= 1:

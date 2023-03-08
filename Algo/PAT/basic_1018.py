@@ -7,7 +7,6 @@
 PAT 乙级 1018
 """
 
-
 if __name__ == '__main__':
     n = int(input())
     first = [0, 0, 0]

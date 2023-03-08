@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
     students.sort(key=get_score)
 
-    print(students[len(students)-1][0], students[len(students)-1][1])
+    print(students[len(students) - 1][0], students[len(students) - 1][1])
     print(students[0][0], students[0][1])

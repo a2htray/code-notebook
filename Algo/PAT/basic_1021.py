@@ -7,7 +7,6 @@
 PAT 乙级 1021
 """
 
-
 if __name__ == '__main__':
     counts = [0] * 10
     for s in input():
