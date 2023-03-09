@@ -9,6 +9,7 @@ var list = []string{
 	"1) shorthand",
 	"2) user defined flag type",
 	"3) flag.NewFlagSet",
+	"4) flag with values",
 }
 
 func main() {
@@ -27,5 +28,7 @@ func main() {
 		examples.ParseStudent()
 	} else if seqNo == 2 {
 		examples.ParseArguments()
+	} else if seqNo == 3 {
+		examples.FlagWithValues()
 	}
 }
