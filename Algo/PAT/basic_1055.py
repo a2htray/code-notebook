@@ -6,6 +6,7 @@
 """
 PAT 乙级 1055
 """
+from typing import List
 from functools import cmp_to_key
 
 
@@ -30,6 +31,16 @@ def cmp(a: Student, b: Student):
             return -1
 
 
+def arrange(ss: List[Student]):
+    names = []
+    for i, s in enumerate(ss):
+        if i % 2 == 0:
+            names.append(s.name)
+        else:
+            names = [s.name] + names
+    print(' '.join(names))
+
+
 if __name__ == '__main__':
     n, k = map(int, input().split(' '))
     students = []
@@ -39,6 +50,13 @@ if __name__ == '__main__':
 
     students.sort(key=cmp_to_key(cmp))
 
-    for student in students:
-        print(student)
+    # for student in students:
+    #     print(student)
 
+    z = n // k  # 每行站几人
+    t = z + n % k  # 最后一行站几个
+
+    rows = [t] + [z] * (k - 1)
+    for m in rows:
+        arrange(students[0:m])
+        students = students[m:]
