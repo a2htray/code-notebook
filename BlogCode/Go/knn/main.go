@@ -12,18 +12,6 @@ import (
 	"time"
 )
 
-// Coltypes 用于计算数据集各列值类型
-func Coltypes(columns []string) map[string]series.Type {
-	m := make(map[string]series.Type, len(columns))
-	m[columns[0]] = series.Int
-
-	for _, v := range columns[1:] {
-		m[v] = series.Float
-	}
-
-	return m
-}
-
 // SplitDataset 拆分数据集
 func SplitDataset(df dataframe.DataFrame, pct float64) (xTrain, xTest dataframe.DataFrame, yTrain, yTest series.Series) {
 	n := df.Nrow()
@@ -57,9 +45,6 @@ func GetRow(df dataframe.DataFrame, i int) series.Series {
 	}
 	return series.New(elements, series.Float, "value")
 }
-
-// MetricFunc 用于定义度量公式
-type MetricFunc func([]float64, []float64) float64
 
 // GetMode 取 slice 中出现最多的一个值
 func GetMode(vs []int) int {
@@ -101,29 +86,52 @@ func Score(vs1 []int, vs2 []int) float64 {
 	return neq / float64(n)
 }
 
-func main() {
-	var metric MetricFunc = func(fs1 []float64, fs2 []float64) float64 {
-		return floats.Distance(fs1, fs2, 2)
+func ReadWineData(filename string) (dataframe.DataFrame, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return dataframe.DataFrame{}, err
 	}
 
-	// 读取数据
-	f, err := os.Open("./dataset/wine.data")
-	if err != nil {
-		log.Fatal(err)
-	}
 	columns := []string{
 		"Class",
 		"Alcohol", "Malic acid", "Ash", "Alcalinity of ash", "Magnesium",
 		"Total phenols", "Flavanoids", "Nonflavanoid phenols", "Proanthocyanins",
 		"Color intensity", "Hue", "OD280/OD315 of diluted wines", "Proline",
 	}
-	coltypes := Coltypes(columns)
-	df := dataframe.ReadCSV(f, dataframe.Names(columns...), dataframe.WithTypes(coltypes))
+	df := dataframe.ReadCSV(f, dataframe.Names(columns...), dataframe.WithTypes(map[string]series.Type{
+		"Class":                        series.Int,
+		"Alcohol":                      series.Float,
+		"Malic acid":                   series.Float,
+		"Ash":                          series.Float,
+		"Alcalinity of ash":            series.Float,
+		"Magnesium":                    series.Float,
+		"Total phenols":                series.Float,
+		"Flavanoids":                   series.Float,
+		"Nonflavanoid phenols":         series.Float,
+		"Proanthocyanins":              series.Float,
+		"Color intensity":              series.Float,
+		"Hue":                          series.Float,
+		"OD280/OD315 of diluted wines": series.Float,
+		"Proline":                      series.Float,
+	}))
+	return df, nil
+}
 
-	xTrain, xTest, yTrain, yTest := SplitDataset(df, 0.93)
-	//fmt.Println(xTrain, xTest, yTrain, yTest)
+func main() {
+	metric := func(fs1 []float64, fs2 []float64) float64 {
+		return floats.Distance(fs1, fs2, 2)
+	}
+
+	// 读取数据
+	df, err := ReadWineData("./dataset/wine.data")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(df)
+	xTrain, xTest, yTrain, yTest := SplitDataset(df, 0.95)
 
 	k := int(math.Sqrt(float64(xTrain.Nrow())))
+	fmt.Println("k =", k)
 
 	yPredict := make([]int, yTest.Len())
 
