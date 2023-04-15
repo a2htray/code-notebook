@@ -6,63 +6,47 @@
 """
 PAT 乙级 1058
 """
-from typing import List
 
-
-class Problem:
-    def __init__(self, seq, score, cnt_op, cnt_correct_op, answers):
-        self.seq = seq
-        self.score = score
-        self.cnt_op = cnt_op
-        self.cnt_correct_op = cnt_correct_op
-        self.answers = set(answers)
-        self.cnt_incorrect = 0
-
-
-def get_answers(line: str):
-    return [answer.strip(' ')[1:].split(' ')[1:] for answer in line.split(')') if answer != '']
-
-
-def all_right(problems: List[Problem]):
-    right = True
-    for p in problems:
-        if p.cnt_incorrect != 0:
-            right = False
-    return right
-
+# 3 4
+# 3 4 2 a c
+# 2 5 1 b
+# 5 3 2 b c
+# 1 5 4 a b d e
+# (2 a c) (2 b d) (2 a c) (3 a b e)
+# (2 a c) (1 b) (2 a b) (4 a b d e)
+# (2 b d) (1 e) (2 b c) (4 a b c d)
 
 if __name__ == '__main__':
-    m, n = map(int, input().split(' '))
-
+    n, m = map(int, input().split())
     problems = []
+
+    for _ in range(m):
+        tokens = input().split()
+        problems.append([
+            int(tokens[0]),
+            int(tokens[1]),
+            int(tokens[2]),
+            set(tokens[3:])
+        ])
+
+    answers = []
+    for _ in range(n):
+        tokens = input().split(')')[:-1]
+        answer = []
+        for token in tokens:
+            answer.append(set(token.strip(' ')[1:].split(' ')[1:]))
+
+        answers.append(answer)
+
+    counts = [0] * m
     for i in range(n):
-        tokens = input().split(' ')
-        problems.append(Problem(
-            seq=i+1,
-            score=int(tokens[0]),
-            cnt_op=int(tokens[1]),
-            cnt_correct_op=int(tokens[2]),
-            answers=tokens[3:]
-        ))
-
-    # for p in problems:
-    #     print(p.seq, p.score, p.cnt_op, p.cnt_correct_op, p.answers)
-
-    for i in range(m):
-        answers = get_answers(input())
         score = 0
-        for j, answer in enumerate(answers):
-            if set(answer) == problems[j].answers:
-                score += problems[j].score
+        for j, item in enumerate(answers[i]):
+            if item == problems[j][3]:
+                score += problems[j][0]
             else:
-                problems[j].cnt_incorrect += 1
+                counts[j] += 1
         print(score)
 
-    if all_right(problems):
-        print('Too simple')
-    else:
-        pass
-
-
-
+    print(counts)
 
