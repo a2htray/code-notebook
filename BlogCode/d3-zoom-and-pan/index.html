@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>d3 zoom and pan examples</title>
+    <style>
+        #plot {
+            width: 600px;
+            height: 400px;
+            border: 1px dashed #000;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+        .btn {
+            border: 1px solid #000;
+            margin-right: 20px;
+            padding: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="plot">
+    <svg></svg>
+</div>
+<div class="btn-group">
+    <span class="btn" onclick="zoomIn()">Zoom In</span>
+    <span class="btn" onclick="zoomOut()">Zoom Out</span>
+    <span class="btn" onclick="zoomReset()">Reset Zoom</span>
+    <span class="btn" onclick="panLeft()">Pan Left</span>
+    <span class="btn" onclick="panRight()">Pan Right</span>
+    <span class="btn" onclick="panReset()">Reset Pan</span>
+</div>
+<script type="text/javascript" src="https://unpkg.com/d3@7.8.2/dist/d3.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/d3-selection-multi@1.0.1/build/d3-selection-multi.js"></script>
+<script>
+
+    const colors = ['#ff2956', '#ff6100', '#e5a702', '#5050ff', '#01f888', '#01f3ff']
+
+    let svg = d3.select('#plot svg')
+    let g = svg.attrs({
+        width: 600,
+        height: 400,
+    }).append('g')
+
+    g.selectAll('circle').data(colors).enter().append('circle').attrs({
+        cx: (d, i) => (i % 3) * 200 + 100,
+        cy: (d, i) => (Math.floor(i / 3)) * 200 + 100,
+        fill: d => d,
+        stroke: 1,
+        r: 100,
+    })
+
+    function handleZoomStart(e) {
+        console.log(e)
+    }
+
+    function handleZoom(e) {
+        svg.select('g').attr('transform', e.transform)
+    }
+
+    function handleZoomEnd(e) {
+        console.log(e)
+    }
+
+    let zoom = d3.zoom().on('zoom', handleZoom).on('start', handleZoomStart).on('end', handleZoomEnd)
+
+    svg.call(zoom)
+
+    function zoomIn() {
+        console.log('zoomIn')
+        svg.transition().call(zoom.scaleBy, 2)
+    }
+
+    function zoomOut() {
+        console.log('zoomOut')
+        svg.transition().call(zoom.scaleBy, 0.5)
+    }
+
+    function zoomReset() {
+        console.log('zoomReset')
+        svg.transition().call(zoom.scaleTo, 1)
+    }
+
+    function panLeft() {
+        console.log('panLeft')
+        svg.transition().call(zoom.translateBy, 30, 0)
+    }
+
+    function panRight() {
+        console.log('panRight')
+        svg.transition().call(zoom.translateBy, -30, 0)
+    }
+
+    function panReset() {
+        console.log('panReset')
+        svg.transition().call(zoom.translateTo, 300, 200)
+    }
+</script>
+</body>
+</html>
