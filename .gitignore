@@ -2,3 +2,7 @@
 code-notebook.iml
 venv
 stockdog
+/Python/rocketmq/broker/
+/Python/rocketmq/conf/
+/Python/rocketmq/includes/
+/Python/rocketmq/nameserver/
