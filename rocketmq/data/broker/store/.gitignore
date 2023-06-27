@@ -1,0 +1,7 @@
+/commitlog/
+/config/
+/consumequeue/
+/index/
+/abort
+/checkpoint
+/lock
