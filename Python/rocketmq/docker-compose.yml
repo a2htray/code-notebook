@@ -1,0 +1,32 @@
+version: "3"
+services:
+  rmqnamesrv:
+    image: rocketmqinc/rocketmq
+    container_name: rmqnamesrv
+    restart: always
+    ports:
+      - "9876:9876"
+    volumes:
+      - ./nameserver/logs:/root/logs
+      - ./nameserver/store:/root/store
+    environment:
+      - MAX_POSSIBLE_HEAP=100000000
+    command: ["sh", "mqnamesrv"]
+  rmqbroker:
+    image: rocketmqinc/rocketmq
+    container_name: rmqbroker
+    restart: always
+    ports:
+      - "10911:10911"
+      - "10909:10909"
+    volumes:
+      - ./broker/logs:/root/logs
+      - ./broker/store:/root/store
+      - ./conf/broker.conf:/opt/docker/rocketmq/broker.conf
+    environment:
+      - MAX_POSSIBLE_HEAP=200000000
+    links:
+      - rmqnamesrv:rmqnamesrv
+    command: ["sh", "mqbroker", "-c", "/opt/docker/rocketmq/broker.conf"]
+    depends_on:
+      - rmqnamesrv
